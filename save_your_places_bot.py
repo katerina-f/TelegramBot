@@ -44,7 +44,7 @@ USER_STATE = defaultdict(lambda: START)
 
 types_list = ['yes', 'NO']
 
-cash = {}
+cache = {}
 
 def create_keyboard():
     keyboard = types.InlineKeyboardMarkup(row_width = 2)
@@ -75,7 +75,7 @@ def check_location(message):
 def callback_handler(callback_query):
     type = callback_query.data
     message = callback_query.message
-    cash['type'] = type
+    cache['type'] = type
     if type == 'yes':
         cursor.execute("DELETE FROM places WHERE user_id = %s",(message.chat.id, ))
         con.commit()
@@ -107,9 +107,9 @@ def handle_name(message):
             update_state(message, START)
         else:
             try:
-                cursor.execute('INSERT INTO places (user_id, places_name) VALUES (%s, %s)', (message.chat.id, message.text))
+                cache['id'] = message.chat.id
+                cache['name'] = message.text
                 update_state(message, LOCATION)
-                con.commit()
                 bot.send_message(message.chat.id, text="Send a location of the place")
             except:
                 bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
@@ -125,7 +125,7 @@ def handle_location(message):
     if USER_STATE[message.chat.id] == 2:
         try:
             lon, lat = message.location.longitude, message.location.latitude
-            cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
+            cursor.execute('INSERT INTO places (user_id, places_name, lat, lon) VALUES (%s, %s, %s, %s)', (cache['id'], cache['name'], lat, lon))
             con.commit()
             bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
             update_state(message, START)
