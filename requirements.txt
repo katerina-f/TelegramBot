@@ -1,0 +1,15 @@
+certifi==2019.3.9
+chardet==3.0.4
+googlemaps==3.0.2
+gunicorn==19.9.0
+idna==2.8
+logger==1.4
+minepy==1.2.3
+numpy==1.16.3
+psycopg2-binary==2.8.2
+PySocks==1.7.0
+pyTelegramBotAPI==3.6.6
+requests==2.22.0
+six==1.12.0
+telebot==0.0.3
+urllib3==1.24.3
