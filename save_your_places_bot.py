@@ -119,6 +119,7 @@ def handle_name(message):
 @bot.message_handler(content_types=['location', 'venue'])
 def handle_location(message, type=None):
     if USER_STATE[message.chat.id] == 2:
+        print(message)
         if check_location(message) == True:
             lon, lat = message.location.longitude, message.location.latitude
             cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
