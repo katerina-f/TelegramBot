@@ -90,11 +90,9 @@ def handle_welcome(message):
     bot.send_message(message.chat.id, text="Hi! I can save all places you're going to visit! Please, start to type with '/' !")
 
 
-@bot.message_handler(func=lambda message: get_state(message) == START)
+
 @bot.message_handler(commands=['add'])
 def handle_add(message):
-    if USER_STATE[message.chat.id] == 2:
-        cursor.execute("DELETE FROM places WHERE lat is NULL")
     bot.send_message(message.chat.id, text="Send a name of the place")
     update_state(message, NAME)
 
