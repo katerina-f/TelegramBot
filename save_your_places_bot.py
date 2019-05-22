@@ -90,7 +90,7 @@ def handle_welcome(message):
     bot.send_message(message.chat.id, text="Hi! I can save all places you're going to visit! Please, start to type with '/' !")
 
 
-
+@bot.message_handler(func=lambda message: get_state(message) == START)
 @bot.message_handler(commands=['add'])
 def handle_add(message):
     if USER_STATE[message.chat.id] == 2:
@@ -109,6 +109,7 @@ def handle_name(message):
             try:
                 cursor.execute('INSERT INTO places (user_id, places_name) VALUES (%s, %s)', (message.chat.id, message.text))
                 update_state(message, LOCATION)
+                con.commit()
                 bot.send_message(message.chat.id, text="Send a location of the place")
             except:
                 bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
