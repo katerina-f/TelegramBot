@@ -63,7 +63,7 @@ def update_state(message, state):
 
 def check_location(message):
     if message.text is not None:
-        if message.text.startswith('/') and USER_STATE[message.chat.id] == 2:
+        if message.text.startswith('/'):
             bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
             update_state(message, START)
         return False
