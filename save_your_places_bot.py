@@ -9,7 +9,7 @@ import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 con = psycopg2.connect(dbname='postgres',
-      user='postgres', host='127.0.0.1',
+      user='postgres', host='',
       password=token_bot.passw2)
 
 con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
