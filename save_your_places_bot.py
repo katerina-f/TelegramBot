@@ -67,7 +67,7 @@ def check_location(message):
             bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
             update_state(message, START)
         else:
-            bot.send_message(message.chat.id, text="Send a location of the place (only )")
+            bot.send_message(message.chat.id, text="Send a location of the place (only)")
         return False
     elif message.location or message.venue:
         return True
@@ -136,7 +136,9 @@ def handle_location(message, type=None):
             my_location =f'{lat},{lon}'
             cursor.execute("SELECT * FROM places WHERE user_id = %s",(message.chat.id, ))
             places = cursor.fetchall()
+
             if places:
+                n = []
                 for row in places:
                     name = f'{row[1]}'
                     lat, lon = f'{row[2]}',f'{row[3]}'
@@ -148,9 +150,13 @@ def handle_location(message, type=None):
                         distance = int(meters)
 
                     if distance < 500:
-                        print(distance)
                         bot.send_message(message.chat.id, text=f"Name: {name}")
                         bot.send_location(message.chat.id, f'{lat}', f'{lon}')
+                        n.append(name)
+                    if n:
+                        pass
+                    else:
+                        bot.send_message(message.chat.id, text="I didn't find any place for you!")
             else:
                 bot.send_message(message.chat.id, text="No places yet!")
     update_state(message, START)
@@ -182,7 +188,14 @@ def handle_nearby(message):
     bot.send_message(message.chat.id, text='Send your location')
     update_state(message, NEARBY)
 
+@bot.message_handler(commands=['help'])
+def handle_help(message):
+    bot.send_message(message.chat.id, text='/add - add some place you are going to visit.')
+    bot.send_message(message.chat.id, text='/list - I will show you all of your places.')
+    bot.send_message(message.chat.id, text='/reset - I will delete all of your places.')
+    bot.send_message(message.chat.id, text='/nearby - I will show your places around you.')
+    bot.send_message(message.chat.id, text='/help - all commands.')
+    update_state(message, START)
 
 bot.polling(none_stop=True)
-
 con.close()
