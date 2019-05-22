@@ -93,6 +93,8 @@ def handle_welcome(message):
 
 @bot.message_handler(commands=['add'])
 def handle_add(message):
+    if USER_STATE[message.chat.id] == 2:
+        cursor.execute("DELETE FROM places WHERE lat is NULL")
     bot.send_message(message.chat.id, text="Send a name of the place")
     update_state(message, NAME)
 
@@ -119,18 +121,16 @@ def handle_name(message):
 @bot.message_handler(func=lambda message: get_state(message) == LOCATION)
 @bot.message_handler(content_types=['location', 'venue'])
 def handle_location(message):
-    print(message)
     if USER_STATE[message.chat.id] == 2:
-        if check_location(message) == True:
+        try:
             lon, lat = message.location.longitude, message.location.latitude
             cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
             con.commit()
             bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
             update_state(message, START)
-        else:
-            if message.photo or message.document:
-                bot.send_message(message.chat.id, text="Send a location of the place")
-
+        except:
+            bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+            update_state(message, START)
 
     if USER_STATE[message.chat.id] == 3:
         if check_location(message) == True:
