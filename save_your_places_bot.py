@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import os
 from collections import defaultdict
 import telebot
 from telebot import types
@@ -8,9 +8,9 @@ import googlemaps
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-con = psycopg2.connect(dbname='postgres',
-      user='postgres', host='/tmp/',
-      password=token_bot.passw2)
+DATABASE_URL = os.environ['DATABASE_URL']
+
+con = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
