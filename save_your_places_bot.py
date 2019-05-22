@@ -9,7 +9,7 @@ import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 con = psycopg2.connect(dbname='postgres',
-      user='postgres', host='',
+      user='postgres', host='/tmp/',
       password=token_bot.passw2)
 
 con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
@@ -21,7 +21,7 @@ try:
     cursor.execute("CREATE DATABASE %s  ;" % db_name)
 except psycopg2.errors.DuplicateDatabase:
     con = psycopg2.connect(dbname=db_name,
-          user='postgres', host='',
+          user='postgres', host='/tmp/',
           password=token_bot.passw2)
 
 try:
