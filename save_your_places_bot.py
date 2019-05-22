@@ -62,20 +62,12 @@ def update_state(message, state):
 
 
 def check_location(message):
-    if message.text.startswith('/') or message.text == '/add':
-        bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
-        cursor.execute('DELETE * FROM places WHERE lat IS NULL ', (lat, lon))
-        con.commit()
-        update_state(message, START)
-        return False
-    elif message.text:
+    if message.text:
         bot.send_message(message.chat.id, text="Send a location of the place (only)")
         return False
     elif message.location or message.venue:
         return True
-    elif message.photo or message.document:
-        bot.send_message(message.chat.id, text="Send a location of the place")
-        return False
+
 
 
 @bot.callback_query_handler(func=lambda x: True)
@@ -132,6 +124,14 @@ def handle_location(message, type=None):
             cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
             con.commit()
             bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
+        else:
+            if message.photo or message.document:
+                bot.send_message(message.chat.id, text="Send a location of the place")
+            elif message.text.startswith('/') or message.text == '/add':
+                bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+                cursor.execute('DELETE * FROM places WHERE lat IS NULL ', (lat, lon))
+                con.commit()
+                update_state(message, START)
 
 
     if USER_STATE[message.chat.id] == 3:
