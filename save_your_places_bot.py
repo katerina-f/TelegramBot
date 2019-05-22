@@ -64,7 +64,7 @@ def update_state(message, state):
 def check_location(message):
     if message.text is not None:
         if message.text.startswith('/'):
-            bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+            bot.send_message(message.chat.id, text="Incorrect command. Try again")
         return False
     elif message.location or message.venue:
         return True
@@ -101,7 +101,7 @@ def handle_add(message):
 def handle_name(message):
     if message.text is not None:
         if message.text.startswith('/'):
-            bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+            bot.send_message(message.chat.id, text="Incorrect command. Try again")
             update_state(message, START)
         else:
             try:
@@ -110,7 +110,7 @@ def handle_name(message):
                 update_state(message, LOCATION)
                 bot.send_message(message.chat.id, text="Send a location of the place")
             except:
-                bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+                bot.send_message(message.chat.id, text="Incorrect command. Try again")
                 update_state(message, START)
     else:
         bot.send_message(message.chat.id, text="Send a name of the place")
@@ -128,7 +128,7 @@ def handle_location(message):
             bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
             update_state(message, START)
         except:
-            bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+            bot.send_message(message.chat.id, text="Incorrect command. Try again")
             update_state(message, START)
 
     if USER_STATE[message.chat.id] == 3:
