@@ -17,12 +17,12 @@ con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 db_name = 'allplaces'
 cursor = con.cursor()
 
-try:
-    cursor.execute("CREATE DATABASE %s  ;" % db_name)
-except psycopg2.errors.DuplicateDatabase:
-    con = psycopg2.connect(dbname=db_name,
-          user='postgres', host='/tmp/',
-          password=token_bot.passw2)
+# try:
+#     cursor.execute("CREATE DATABASE %s  ;" % db_name)
+# except psycopg2.errors.DuplicateDatabase:
+#     con = psycopg2.connect(dbname=db_name,
+#           user='postgres', host='/tmp/',
+#           password=token_bot.passw2)
 
 try:
     create_table_query = '''CREATE TABLE places
