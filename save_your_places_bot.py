@@ -117,22 +117,23 @@ def handle_name(message):
 @bot.message_handler(func=lambda message: get_state(message) == NEARBY)
 @bot.message_handler(func=lambda message: get_state(message) == LOCATION)
 @bot.message_handler(content_types=['location', 'venue'])
-def handle_location(message, type=None):
-    if message.text.startswith('/'):
+def handle_location(message):
+    if message.text and message.text.startswith('/'):
         bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
         cursor.execute('DELETE * FROM places WHERE lat IS NULL ')
         con.commit()
         update_state(message, START)
-    if USER_STATE[message.chat.id] == 2:
-        print(message)
-        if check_location(message) == True:
-            lon, lat = message.location.longitude, message.location.latitude
-            cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
-            con.commit()
-            bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
-        else:
-            if message.photo or message.document:
-                bot.send_message(message.chat.id, text="Send a location of the place")
+    else:
+        if USER_STATE[message.chat.id] == 2:
+            print(message)
+            if check_location(message) == True:
+                lon, lat = message.location.longitude, message.location.latitude
+                cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
+                con.commit()
+                bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
+            else:
+                if message.photo or message.document:
+                    bot.send_message(message.chat.id, text="Send a location of the place")
 
 
     if USER_STATE[message.chat.id] == 3:
