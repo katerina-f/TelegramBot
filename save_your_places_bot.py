@@ -119,6 +119,7 @@ def handle_name(message):
 @bot.message_handler(func=lambda message: get_state(message) == LOCATION)
 @bot.message_handler(content_types=['location', 'venue'])
 def handle_location(message):
+    print(message)
     if USER_STATE[message.chat.id] == 2:
         if check_location(message) == True:
             lon, lat = message.location.longitude, message.location.latitude
