@@ -116,6 +116,8 @@ def handle_name(message):
             except:
                 bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
                 update_state(message, START)
+    else:
+        bot.send_message(message.chat.id, text="Send a name of the place")
 
 
 @bot.message_handler(func=lambda message: get_state(message) == NEARBY)
@@ -153,10 +155,10 @@ def handle_location(message, type=None):
                         bot.send_message(message.chat.id, text=f"Name: {name}")
                         bot.send_location(message.chat.id, f'{lat}', f'{lon}')
                         n.append(name)
-                    if n:
-                        pass
-                    else:
-                        bot.send_message(message.chat.id, text="I didn't find any place for you!")
+                if n:
+                    pass
+                else:
+                    bot.send_message(message.chat.id, text="I didn't find any place for you!")
             else:
                 bot.send_message(message.chat.id, text="No places yet!")
     update_state(message, START)
