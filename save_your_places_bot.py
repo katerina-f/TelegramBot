@@ -64,7 +64,7 @@ def update_state(message, state):
 def check_location(message):
     if message.text:
         print(message.text)
-        if message.text.startswith('/'):
+        if message.text.startswith('/') or message.text == '/add':
             bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
             cursor.execute('DELETE * FROM places WHERE lat IS NULL ', (lat, lon))
             con.commit()
