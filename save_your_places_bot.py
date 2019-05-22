@@ -126,6 +126,7 @@ def handle_location(message):
             cursor.execute('UPDATE places SET lat=%s, lon=%s WHERE lat IS NULL ', (lat, lon))
             con.commit()
             bot.send_message(message.chat.id, text="Congrats! We've saved another one place!")
+            update_state(message, START)
         else:
             if message.photo or message.document:
                 bot.send_message(message.chat.id, text="Send a location of the place")
@@ -160,7 +161,7 @@ def handle_location(message):
                     bot.send_message(message.chat.id, text="I didn't find any place for you!")
             else:
                 bot.send_message(message.chat.id, text="No places yet!")
-    update_state(message, START)
+        update_state(message, START)
 
 
 @bot.message_handler(commands=['reset'])
