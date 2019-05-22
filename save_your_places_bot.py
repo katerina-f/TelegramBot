@@ -98,13 +98,12 @@ def handle_welcome(message):
 
 @bot.message_handler(commands=['add'])
 def handle_add(message):
-    bot.send_message(message.chat.id, text="Send a name of the place(only latin characters)")
+    bot.send_message(message.chat.id, text="Send a name of the place")
     update_state(message, NAME)
 
 
 @bot.message_handler(func=lambda message: get_state(message) == NAME)
 def handle_name(message):
-    print(message)
     if message.text is not None:
         if message.text.startswith('/'):
             bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
@@ -115,8 +114,8 @@ def handle_name(message):
                 update_state(message, LOCATION)
                 bot.send_message(message.chat.id, text="Send a location of the place")
             except:
-                bot.send_message(message.chat.id, text="Only latin characters!")
-
+                bot.send_message(message.chat.id, text="Had failed to fulfil a command. Write a new command")
+                update_state(message, START)
 
 
 @bot.message_handler(func=lambda message: get_state(message) == NEARBY)
