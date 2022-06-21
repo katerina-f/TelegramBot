@@ -5,7 +5,7 @@ gunicorn==19.9.0
 idna==2.8
 logger==1.4
 minepy==1.2.3
-numpy==1.16.3
+numpy==1.22.0
 psycopg2-binary==2.8.2
 PySocks==1.7.0
 pyTelegramBotAPI==3.6.6
